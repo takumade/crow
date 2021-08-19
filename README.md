@@ -23,7 +23,7 @@ Is an unofficial Twitter client in node js. It works with puppeteer and twitter.
 
 ## Examples
 
-**1. Get the current trends**
+Before you can run the examples you need to create a twitter client and then log in with it:
 
 ```js
 import { TwitterClient } from "./classes/twitter_client";
@@ -33,14 +33,23 @@ let twitterClient = new TwitterClient(
     "<password>"
 );
 
-twitterClient.login()
-    .then(async () => {
-        let trends = await twitterClient.getTrends()
-        console.log(trends)
+twitterClient.login().then(() => {
+        // do your stuff here
 })
 ```
 
+**1. Get the current trends**
+
+```js
+let trends = await twitterClient.getTrends()        
+```
+
 This will return a list of `TrendItem` objects.
+
+**2. Tweet something**
+```js
+await twitterClient.tweet("Hello World! how are you");
+```
 
 ## Features
 
@@ -52,6 +61,7 @@ This will return a list of `TrendItem` objects.
 | Get Trending |   :ballot_box_with_check:  |   :ballot_box_with_check: |
 | Get Tweets |    :x:   |   :x: |
 | Reply to a tweet |    :x:   |   :x: |
+| Tweet a text message |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Like a tweet |    :x:   |   :x: |
 | Delete a tweet |    :x:   |   :x: |
     
