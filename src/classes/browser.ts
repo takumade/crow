@@ -17,8 +17,20 @@ export class Browser {
         if (waitForSelector != null){
             await this.page.waitForSelector(waitForSelector)
         }
-        
     }
+
+    async goToUrlSamePage(url:string, waitForSelector:string = undefined){
+        await this.page.goto(url);
+        if (waitForSelector != null){
+            await this.page.waitForSelector(waitForSelector)
+        }
+    }
+
+    getCurrentPage(){
+        return this.page;
+    }
+
+    
 
    async enterInput(selector:string, text:string, delay:number = 100){
         await this.page.type(selector, text, { delay: delay });
@@ -27,6 +39,7 @@ export class Browser {
    async clickSelector(selector:string){
         await this.page.click(selector)
    }
+
         
 
 
