@@ -25,7 +25,7 @@ Is an unofficial Twitter client in node js. It works with puppeteer and twitter.
 
 | Feature   |     Done      |  Is Working |
 |----------|:-------------:|------:|
-| Auth |  :x:| :x: |
+| Auth |  :ballot_box_with_check:| :ballot_box_with_check: |
 | Get User |    :x:   |   :x: |
 | Get Tweet |    :x:   |   :x: |
 | Get Trending |    :x:   |   :x: |

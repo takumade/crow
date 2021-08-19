@@ -2,12 +2,13 @@
   "name": "blackbird",
   "version": "1.0.0",
   "description": "An unofficial nodejs Twitter client",
-  "main": "index.js",
+  "main": "dist/index.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/index.js"
   },
   "keywords": [
     "twitter",
@@ -16,5 +17,9 @@
     "unofficial"
   ],
   "author": "takumade",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^10.2.0",
+    "typescript": "^4.3.5"
+  }
 }
