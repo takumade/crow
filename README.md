@@ -21,6 +21,27 @@ Is an unofficial Twitter client in node js. It works with puppeteer and twitter.
 
 3. Play
 
+## Examples
+
+**1. Get the current trends**
+
+```js
+import { TwitterClient } from "./classes/twitter_client";
+
+let twitterClient = new TwitterClient(
+    "<username>",
+    "<password>"
+);
+
+twitterClient.login()
+    .then(async () => {
+        let trends = await twitterClient.getTrends()
+        console.log(trends)
+})
+```
+
+This will return a list of `TrendItem` objects.
+
 ## Features
 
 | Feature   |     Done      |  Is Working |
@@ -28,7 +49,7 @@ Is an unofficial Twitter client in node js. It works with puppeteer and twitter.
 | Auth |  :ballot_box_with_check:| :ballot_box_with_check: |
 | Get User |    :x:   |   :x: |
 | Get Tweet |    :x:   |   :x: |
-| Get Trending |    :x:   |   :x: |
+| Get Trending |   :ballot_box_with_check:  |   :ballot_box_with_check: |
 | Get Tweets |    :x:   |   :x: |
 | Reply to a tweet |    :x:   |   :x: |
 | Like a tweet |    :x:   |   :x: |
