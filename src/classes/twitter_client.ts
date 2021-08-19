@@ -23,6 +23,19 @@ export class TwitterClient{
 
     }
 
+    async tweet(tweet_text: string){
+        await this.browser.getCurrentPage().waitForSelector("[data-testid='AppTabBar_Home_Link']")
+        await this.browser.clickSelector("[data-testid='AppTabBar_Home_Link']")
+
+        await this.browser.getCurrentPage().waitForSelector("[data-testid='SideNav_NewTweet_Button']")
+        await this.browser.clickSelector("[data-testid='SideNav_NewTweet_Button']")
+        await this.browser.getCurrentPage().waitForSelector(".public-DraftEditorPlaceholder-root")
+
+        await this.browser.enterInput2(tweet_text.substr(0,279), 100)
+        this.browser.clickSelector("[data-testid='tweetButton']")
+
+    }
+
     async getTrends(timeout: number = 5000){
         let final_trends = []
         let current_page = this.browser.getCurrentPage()

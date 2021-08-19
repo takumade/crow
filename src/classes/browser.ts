@@ -36,9 +36,14 @@ export class Browser {
         await this.page.type(selector, text, { delay: delay });
     }
 
+    async enterInput2(text:string, delay:number = 100){
+        await this.page.keyboard.type(text, { delay: delay });
+    }
+
    async clickSelector(selector:string){
         await this.page.click(selector)
    }
+  
 
         
 
