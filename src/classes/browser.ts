@@ -10,9 +10,15 @@ export class Browser {
         return this
     }
 
+    randomInt(min:number, max:number){
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     async getDriver(){  
         return this.driver;
     }
+
+
 
 
 
@@ -25,6 +31,46 @@ export class Browser {
             }
         }
         
+    }
+
+    async scrollPage(scrollMax:number = 1000, scrollUnit: number = 10, sleepAfter:number = 0){
+
+        let scrolledAmount = 0
+        let sleepMax = scrollMax / scrollUnit
+        let sleepAmount = 0
+
+        for (let index = 0; index < scrollMax/scrollUnit; index++) {
+            
+            scrolledAmount = index * scrollUnit
+
+            // Sleep after some scroll amount
+            if (sleepAfter > 0 && sleepAmount < sleepMax){
+                if ((scrolledAmount - (sleepAfter * sleepAmount)) >= sleepAfter){
+                    await this.driver.sleep(this.randomInt(1,2) * 1000)
+                    sleepAmount += 1            
+                }
+            }
+
+            // Scroll
+            await this.driver.executeScript(`window.scrollBy(0, ${scrollUnit})`)
+            
+        }
+            
+    }
+
+    async sendKeys(selectorBy:string, selectorByArg:string, keys:string, minDelay:number = 1, maxDelay:number=2){
+
+        let element = await this.getElement(selectorBy, selectorByArg)
+
+        for (let index = 0; index < keys.length; index++) {
+            const key = keys[index];
+            
+            if (minDelay > 0 && maxDelay > 0){
+                await this.driver.sleep(this.randomInt(minDelay, maxDelay) * 1000)
+            }
+            
+            await element.sendKeys(key)
+        }
     }
 
     async getElement(by:string, arg:string){
@@ -65,14 +111,5 @@ export class Browser {
     getCurrentPage(){
         return this.page;
     }
-
-    
-
-
-  
-
-        
-
-
 
 }

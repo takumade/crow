@@ -18,17 +18,15 @@ export class TwitterClient{
                 "[autocomplete='username']")
 
             // Enter username 
-            let usernameInput = await this.browser.getElement("css", "[autocomplete='username']")
-            usernameInput.sendKeys(username)
-            await this.browser.driver.sleep(2000)
+            await this.browser.sendKeys("css", "[autocomplete='username']", username)
+            await this.browser.driver.sleep(this.browser.randomInt(1,2))
             await this.browser.findButtonAndClick("Next")
 
             // Enter password
             await this.browser.waitForElement("css", 'input[type="password"]')
             // await this.browser.driver.sleep(10000)
-            let passwordInput = await this.browser.getElement("css", 'input[type="password"]')
-            passwordInput.sendKeys(password)
-            await this.browser.driver.sleep(3000)
+            await this.browser.sendKeys("css", 'input[type="password"]', password)
+            await this.browser.driver.sleep(this.browser.randomInt(1,3))
             await this.browser.findButtonAndClick("Log in")
 
             await this.browser.waitForElement("css", '[aria-label="Tweet"]')
@@ -98,6 +96,22 @@ export class TwitterClient{
             let trendsList =  await this.browser.syncExecuteJS(trendsScript)
             return trendsList
 
+
+        }catch(e){
+            console.log(e)
+        }
+    }
+
+    async tweet(tweet: string){
+        try {
+            let tweetElement = await this.browser.getElement("css", '[aria-label="Tweet"]')
+            tweetElement.click()
+
+            await this.browser.waitForElement("css", "[data-testid='tweetTextarea_0']")
+            await this.browser.sendKeys("css", "[data-testid='tweetTextarea_0']", tweet, 1 , 3)
+            await this.browser.driver.sleep(this.browser.randomInt(1,3))
+            let tweetButton = await this.browser.getElement("css", "[data-testid='tweetButton']")
+            tweetButton.click()
 
         }catch(e){
             console.log(e)

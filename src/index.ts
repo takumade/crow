@@ -14,9 +14,7 @@ let browser = new Browser().init().then(
         let client = new TwitterClient(browser)
         client.login(username, password).then(result => {
             console.log("Login result: ", result)
-            client.getTrends().then(trends => {
-                console.log("Trends: ", trends)
-            })
+            client.tweet("Hello everyone I miss you")
         })
 
 
