@@ -12,9 +12,12 @@ let browser = new Browser().init().then(
 
         console.log("The browser is ready: ", browser)
         let client = new TwitterClient(browser)
-        client.login(username, password).then(result => {
+        client.login(username, password).then(async (result) => {
             console.log("Login result: ", result)
-            client.tweet("Hello everyone I miss you")
+            console.log(await client.scrapUser("Tinashe_Maburu"))
+            console.log(await client.scrapUser("cypd_"))
+            console.log(await client.scrapUser("RealTalkFadzie"))
+            console.log(await client.scrapUser("Bybit_Official"))
         })
 
 

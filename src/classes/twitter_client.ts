@@ -18,14 +18,14 @@ export class TwitterClient{
                 "[autocomplete='username']")
 
             // Enter username 
-            await this.browser.sendKeys("css", "[autocomplete='username']", username)
+            await this.browser.sendKeys("css", "[autocomplete='username']", username, 0,0)
             await this.browser.driver.sleep(this.browser.randomInt(1,2))
             await this.browser.findButtonAndClick("Next")
 
             // Enter password
             await this.browser.waitForElement("css", 'input[type="password"]')
             // await this.browser.driver.sleep(10000)
-            await this.browser.sendKeys("css", 'input[type="password"]', password)
+            await this.browser.sendKeys("css", 'input[type="password"]', password, 0,0)
             await this.browser.driver.sleep(this.browser.randomInt(1,3))
             await this.browser.findButtonAndClick("Log in")
 
@@ -108,12 +108,59 @@ export class TwitterClient{
             tweetElement.click()
 
             await this.browser.waitForElement("css", "[data-testid='tweetTextarea_0']")
-            await this.browser.sendKeys("css", "[data-testid='tweetTextarea_0']", tweet, 1 , 3)
+            await this.browser.sendKeys("css", "[data-testid='tweetTextarea_0']", tweet, 1 , 2)
             await this.browser.driver.sleep(this.browser.randomInt(1,3))
             let tweetButton = await this.browser.getElement("css", "[data-testid='tweetButton']")
             tweetButton.click()
 
         }catch(e){
+            console.log(e)
+        }
+    }
+
+    async scrapUser(username:string){
+
+        try{
+            await this.browser.goToPage(
+                "https://twitter.com/" + username,
+                "css",
+                '[alt="Opens profile photo"]')
+
+
+            await this.browser.driver.sleep(this.browser.randomInt(1,5))
+
+
+            let scrapUserScript = `
+                let userNameRaw = document.querySelector('[data-testid="UserName"]')
+                                  .innerText.split(String.fromCharCode(0x0a))
+
+                let displayname = userNameRaw[0]
+                let userName = userNameRaw[1]
+                let bio = document.querySelector('[data-testid="UserDescription"]')?.innerText
+                let location = document.querySelector('[data-testid="UserLocation"]')?.innerText
+                let url = document.querySelector('[data-testid="UserUrl"]')?.innerText
+                let professionalCategory = document.querySelector('[data-testid="UserProfessionalCategory"]')?.innerText
+                let following = document.querySelector('[href="/${username}/following"]')?.innerText
+                let followers = document.querySelector('[href="/${username}/followers"]')?.innerText
+                let photo = document.querySelector('[alt="Opens profile photo"]')?.src
+
+                let userDetails = {
+                    displayname,
+                    userName,
+                    bio,
+                    location,
+                    url,
+                    professionalCategory,
+                    following,
+                    followers,
+                    photo
+                }
+
+                return userDetails`
+
+            let result = await this.browser.syncExecuteJS(scrapUserScript)
+            return result
+        }catch (e){
             console.log(e)
         }
     }
