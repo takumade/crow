@@ -1,28 +1,54 @@
-const puppeteer = require('puppeteer');
+import { Builder, By, Key, until } from 'selenium-webdriver';
 
 export class Browser {
 
-    browser
+    driver
     page
 
-    async getBrowser(){
-        this.browser = await puppeteer.launch({ headless: false });
+    async init(){
+        this.driver = await new Builder().forBrowser('chrome').build();
+        return this
     }
 
-    async goToPage(url:string, waitForSelector:string = undefined){
-        await this.getBrowser()
-        this.page = await this.browser.newPage();
-        await this.page.goto(url);
+    async getDriver(){  
+        return this.driver;
+    }
 
-        if (waitForSelector != null){
-            await this.page.waitForSelector(waitForSelector)
+
+
+    async goToPage(url:string, waitby:string = "", waitarg:string = ""){
+        await this.driver.get(url)
+
+        if(waitby != ""){
+            if (waitby == "css"){
+                await this.driver.wait(until.elementLocated(By.css(waitarg)), 10000)
+            }
+        }
+        
+    }
+
+    async getElement(by:string, arg:string){
+        if (by == "css"){
+            return await this.driver.findElement(By.css(arg))
         }
     }
 
-    async goToUrlSamePage(url:string, waitForSelector:string = undefined){
-        await this.page.goto(url);
-        if (waitForSelector != null){
-            await this.page.waitForSelector(waitForSelector)
+    async findButtonAndClick(buttonText:string){
+        let script = `let buttons = document.querySelectorAll("[role='button']")
+        for (let index = 0; index < buttons.length; index++) {
+            const element = buttons[index];
+            if (element.innerText == "${buttonText}"){
+                element.click()
+                break
+            }
+        }`
+
+        await this.driver.executeScript(script)
+    }
+
+    async waitForElement(waitby:string, waitarg:string, timeout:number = 10000){
+        if (waitby == "css"){
+            await this.driver.wait(until.elementLocated(By.css(waitarg)), timeout)
         }
     }
 
@@ -32,17 +58,7 @@ export class Browser {
 
     
 
-   async enterInput(selector:string, text:string, delay:number = 100){
-        await this.page.type(selector, text, { delay: delay });
-    }
 
-    async enterInput2(text:string, delay:number = 100){
-        await this.page.keyboard.type(text, { delay: delay });
-    }
-
-   async clickSelector(selector:string){
-        await this.page.click(selector)
-   }
   
 
         

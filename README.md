@@ -8,7 +8,7 @@ An unofficial Twitter client in node js.
 
 ![Blackbird](./images/usecase.jpg)
 
-Is an unofficial Twitter client in node js. It works with puppeteer and twitter. With that said i am not reponsible if you get suspended from twitter. Be a good netizen and follow the rules.
+Is an unofficial Twitter client in node js. It works with selenium and twitter. With that said i am not reponsible if you get suspended from twitter. Be a good netizen and follow the rules.
 
 ## How to Install
 1. Clone the project
