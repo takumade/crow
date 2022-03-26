@@ -12,7 +12,12 @@ let browser = new Browser().init().then(
 
         console.log("The browser is ready: ", browser)
         let client = new TwitterClient(browser)
-        client.login(username, password)
+        client.login(username, password).then(result => {
+            console.log("Login result: ", result)
+            client.getTrends().then(trends => {
+                console.log("Trends: ", trends)
+            })
+        })
 
 
 

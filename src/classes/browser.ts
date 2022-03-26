@@ -33,6 +33,12 @@ export class Browser {
         }
     }
 
+    async getElements(by:string, arg:string){
+        if (by == "css"){
+            return await this.driver.findElements(By.css(arg))
+        }
+    }
+
     async findButtonAndClick(buttonText:string){
         let script = `let buttons = document.querySelectorAll("[role='button']")
         for (let index = 0; index < buttons.length; index++) {
@@ -50,6 +56,10 @@ export class Browser {
         if (waitby == "css"){
             await this.driver.wait(until.elementLocated(By.css(waitarg)), timeout)
         }
+    }
+
+    async syncExecuteJS (script:string){
+        return await this.driver.executeScript(script)
     }
 
     getCurrentPage(){
