@@ -59,7 +59,7 @@ await twitterClient.tweet("Hello World! how are you");
 | Get User |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Get Tweet |    :x:   |   :x: |
 | Get Trending |   :ballot_box_with_check:  |   :ballot_box_with_check: |
-| Get Tweets |    :x:   |   :x: |
+| Get Tweets |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Reply to a tweet |    :x:   |   :x: |
 | Tweet a text message |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Like a tweet |    :x:   |   :x: |
