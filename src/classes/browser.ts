@@ -22,7 +22,7 @@ export class Browser {
 
 
 
-    async goToPage(url:string, waitby:string = "", waitarg:string = ""){
+    async goToPage(url:string, waitby:string = "", waitarg:string = "", timeout:number = 10000){
         await this.driver.get(url)
 
         if(waitby != ""){
@@ -36,7 +36,7 @@ export class Browser {
     async scrollPage(scrollMax:number = 1000, scrollUnit: number = 10, sleepAfter:number = 0){
 
         let scrolledAmount = 0
-        let sleepMax = scrollMax / scrollUnit
+        let sleepMax = scrollMax / sleepAfter
         let sleepAmount = 0
 
         for (let index = 0; index < scrollMax/scrollUnit; index++) {
@@ -68,7 +68,7 @@ export class Browser {
             if (minDelay > 0 && maxDelay > 0){
                 await this.driver.sleep(this.randomInt(minDelay, maxDelay) * 1000)
             }
-            
+
             await element.sendKeys(key)
         }
     }
@@ -96,6 +96,28 @@ export class Browser {
         }`
 
         await this.driver.executeScript(script)
+    }
+
+    async getCurrentWindowHandle(){
+        let handle = await this.driver.getWindowHandle()
+        return handle
+    }
+
+    async ctrlClickElement(element:any, currenWindowHandle:any){
+        await this.driver.actions().keyDown(Key.CONTROL).click(element).keyUp(Key.CONTROL).perform()
+
+        await this.driver.wait(
+            async () => (await this.driver.getAllWindowHandles()).length > 1,
+            10000
+          );
+
+        let handles = await this.driver.getAllWindowHandles()
+
+        return handles.filter(handle => handle != currenWindowHandle)[0]
+    }
+
+    async switchTab(handle:string){
+        await this.driver.switchTo().window(handle)
     }
 
     async waitForElement(waitby:string, waitarg:string, timeout:number = 10000){

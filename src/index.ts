@@ -14,10 +14,9 @@ let browser = new Browser().init().then(
         let client = new TwitterClient(browser)
         client.login(username, password).then(async (result) => {
             console.log("Login result: ", result)
-            console.log(await client.scrapUser("Tinashe_Maburu"))
-            console.log(await client.scrapUser("cypd_"))
-            console.log(await client.scrapUser("RealTalkFadzie"))
-            console.log(await client.scrapUser("Bybit_Official"))
+            let tweets = await client.fetchTweets("https://twitter.com/home", 10)
+            console.log("Tweets: ", tweets)
+
         })
 
 
