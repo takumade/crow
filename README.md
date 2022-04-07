@@ -1,4 +1,5 @@
 # Blackbird
+### Codename: Raven
 
 <img src="./images/logo.png" width="200" alt="Blackbird Logo">
 
@@ -8,7 +9,7 @@ An unofficial Twitter client in node js.
 
 ![Blackbird](./images/usecase.jpg)
 
-Is an unofficial Twitter client in node js. It works with selenium and twitter. With that said i am not reponsible if you get suspended from twitter. Be a good netizen and follow the rules.
+Is an unofficial Twitter client written in node js. It works with selenium and twitter. With that said i am not reponsible if you get suspended from twitter. Be a good netizen and follow the rules.
 
 ## How to Install
 1. Clone the project
@@ -19,37 +20,60 @@ Is an unofficial Twitter client in node js. It works with selenium and twitter. 
 
         npm install
 
-3. Play
+3. Do some coding and play
+        npm run start
 
-## Examples
+## Important
 
-Before you can run the examples you need to create a twitter client and then log in with it:
+Before you can you can do anything you need to first get a twitter client. A twitter client is a logged in user
+
+1. Add your creds in `constants.ts`
+```js
+export const username = "username"
+export const password = "password"
+```
+
+2. Now obtain a client and fetch tweets
 
 ```js
-import { TwitterClient } from "./classes/twitter_client";
+import { TwitterClient } from "./classes/twitter_client"
+import { Browser } from "./classes/browser"
 
-let twitterClient = new TwitterClient(
-    "<username>",
-    "<password>"
-);
+try{
+     let browser = new Browser()
+     await browser.init()
+            
+     console.log("The browser is ready: ", browser)
+        
+     let client = new TwitterClient(browser)
+     let loginResult = await client.login()
 
-twitterClient.login().then(() => {
-        // do your stuff here
-})
+     if(loginResult){
+         // Do your stuff here
+         let tweets = await client.fetchTweets("https://twitter.com/home", 10)
+         console.log("Tweets: ", tweets)
+     }
+
+}catch(e){
+     console.log(e)
+}
 ```
+
+## Examples
 
 **1. Get the current trends**
 
 ```js
-let trends = await twitterClient.getTrends()        
+// Get Twitter client first
+let trends = await client.getTrends()        
 ```
-
-This will return a list of `TrendItem` objects.
 
 **2. Tweet something**
 ```js
-await twitterClient.tweet("Hello World! how are you");
+// Get Twitter client first
+await client.tweet("Hello World! how are you");
 ```
+
 
 ## Features
 
@@ -64,7 +88,8 @@ await twitterClient.tweet("Hello World! how are you");
 | Tweet a text message |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Like a tweet |    :x:   |   :x: |
 | Delete a tweet |    :x:   |   :x: |
+| Turn it into a package |    :x:   |   :x: |
     
 ## Buy me a coffee
 
-   <a href="https://www.buymeacoffee.com/takumade" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+https://wa.me/263778548832?text="Hey%20I%20want%20to%20buy%20you%20a%20coffee"
