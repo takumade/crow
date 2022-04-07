@@ -22,6 +22,13 @@ Is an unofficial Twitter client written in node js. It works with selenium and t
 
 3. Do some coding and play
         npm run start
+        
+ ##Addons
+ incase you have chrome driver do the following
+ 
+ 1. npm install -g chromedriver
+ or
+ 2.npm install --save-dev chromedriver 
 
 ## Important
 
