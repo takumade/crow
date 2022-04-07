@@ -1,6 +1,7 @@
 
 import { isThisTypeNode } from 'typescript'
 import { Browser } from './browser'
+import { username, password } from '../constants'
 
 export class TwitterClient{
 
@@ -10,7 +11,7 @@ export class TwitterClient{
         this.browser = browser
     }
 
-    async login(username: string, password: string){
+    async login(){
         try{
 
             await this.browser.goToPage(
