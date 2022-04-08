@@ -12,9 +12,7 @@ const getTweets = async () => {
 
         let client = new TwitterClient()
         let result = await client.getClient()
-
-       
-
+        
         if(result){
            // Do your stuff here
            let tweets = await client.fetchTweets("https://twitter.com/home", 10)

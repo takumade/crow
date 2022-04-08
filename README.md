@@ -37,25 +37,22 @@ export const password = "password"
 
 ```js
 import { TwitterClient } from "./classes/twitter_client"
-import { Browser } from "./classes/browser"
 
-try{
-     let browser = new Browser()
-     await browser.init()
-            
-     console.log("The browser is ready: ", browser)
+const getTweets = async () =>  {
+   try{
+
+        let client = new TwitterClient()
+        let result = await client.getClient()
         
-     let client = new TwitterClient(browser)
-     let loginResult = await client.login()
+        if(result){
+           // Do your stuff here
+           let tweets = await client.fetchTweets("https://twitter.com/home", 10)
+            console.log("Tweets: ", tweets)
+        }
 
-     if(loginResult){
-         // Do your stuff here
-         let tweets = await client.fetchTweets("https://twitter.com/home", 10)
-         console.log("Tweets: ", tweets)
-     }
-
-}catch(e){
-     console.log(e)
+    }catch(e){
+        console.log(e)
+    }
 }
 ```
 
@@ -88,6 +85,7 @@ await client.tweet("Hello World! how are you");
 | Tweet a text message |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Like a tweet |    :x:   |   :x: |
 | Delete a tweet |    :x:   |   :x: |
+| Login with cookies |    :ballot_box_with_check:  |   :ballot_box_with_check: |
 | Turn it into a package |    :x:   |   :x: |
     
 ## Buy me a coffee
