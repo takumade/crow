@@ -1,22 +1,20 @@
 
 import { TwitterClient } from "./classes/twitter_client"
-import { Browser } from "./classes/browser"
+
 
 const start = async () => {
     // Init the browser 
     try{
-        let browser = new Browser()
-        await browser.init()
-            
-        console.log("The browser is ready: ", browser)
-        
-        let client = new TwitterClient(browser)
-        let loginResult = await client.login()
 
-        if(loginResult){
-            // Do your stuff here
-           
+        let client = new TwitterClient()
+        let result = await client.getClient()
 
+       
+
+        if(result){
+           // Do your stuff here
+           let trends = await client.getTrends()
+           console.log("Trends: ", trends)
             
         }
 

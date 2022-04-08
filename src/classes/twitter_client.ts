@@ -8,8 +8,11 @@ export class TwitterClient{
 
     browser: Browser
 
-    constructor(browser: Browser){
-        this.browser = browser
+
+    async getClient(){
+        this.browser = new Browser()
+        await this.browser.init()
+        return await this.login()
     }
 
     async login(cookies: any[]=null){
