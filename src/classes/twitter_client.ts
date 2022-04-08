@@ -2,6 +2,7 @@
 import { isThisTypeNode } from 'typescript'
 import { Browser } from './browser'
 import { username, password } from '../constants'
+import { Driver } from 'selenium-webdriver/chrome'
 
 export class TwitterClient{
 
@@ -11,36 +12,58 @@ export class TwitterClient{
         this.browser = browser
     }
 
-    async login(){
+    async login(cookies: any[]=null){
+
         try{
-
+            // Try loggin in with cookies
             await this.browser.goToPage(
-                "https://twitter.com/i/flow/login",
-               )
+                "https://twitter.com/",
+            )
 
-            await this.browser.driver.sleep(this.browser.randomInt(6,10) * 1000)
-            await this.browser.waitForElement( "css",
-            "[autocomplete='username']",
-            20000)
 
-            // Enter username 
-            await this.browser.sendKeys("css", "[autocomplete='username']", username, 0,0)
-            await this.browser.driver.sleep(this.browser.randomInt(1,2))
-            await this.browser.findButtonAndClick("Next")
+            let result = await this.browser.retreiveCookies(cookies)
 
-            // Enter password
-            await this.browser.waitForElement("css", 'input[type="password"]')
-            // await this.browser.driver.sleep(10000)
-            await this.browser.sendKeys("css", 'input[type="password"]', password, 0,0)
-            await this.browser.driver.sleep(this.browser.randomInt(1,3))
-            await this.browser.findButtonAndClick("Log in")
+            if (result){
+                await this.browser.driver.sleep(3000)
+
+                await this.browser.goToPage(
+                    "https://twitter.com/",
+                )
+
+            }else{
+                // Else login with creds \
+                await this.browser.goToPage(
+                    "https://twitter.com/i/flow/login",
+                )
+    
+                await this.browser.driver.sleep(this.browser.randomInt(6,10) * 1000)
+                await this.browser.waitForElement( "css",
+                "[autocomplete='username']",
+                20000)
+    
+                // Enter username 
+                await this.browser.sendKeys("css", "[autocomplete='username']", username, 0,0)
+                await this.browser.driver.sleep(this.browser.randomInt(1,2))
+                await this.browser.findButtonAndClick("Next")
+    
+                // Enter password
+                await this.browser.waitForElement("css", 'input[type="password"]')
+                // await this.browser.driver.sleep(10000)
+                await this.browser.sendKeys("css", 'input[type="password"]', password, 0,0)
+                await this.browser.driver.sleep(this.browser.randomInt(1,3))
+                await this.browser.findButtonAndClick("Log in")
+            }
+
+            
+            
 
             await this.browser.waitForElement("css", '[aria-label="Tweet"]')
 
             let tweetButton = await this.browser.getElement("css", '[aria-label="Tweet"]')
 
             if (tweetButton){
-                console.log("Login success")
+                console.log("Login success... saveing cookies")
+                let d = await this.getCookies(true)
                 return true
             }else{
                 console.log("Login failed")
@@ -292,6 +315,14 @@ export class TwitterClient{
             console.log(e)
         }
 
+    }
+
+    async getCookies(store: boolean=false){
+        return await this.browser.saveCookies(store)
+    }
+
+    async retrieveCookies(cookies: any[]){
+        return await this.retrieveCookies(cookies)
     }
 
 

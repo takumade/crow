@@ -21,5 +21,9 @@
   "dependencies": {
     "selenium-webdriver": "^4.1.1",
     "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "@types/selenium-webdriver": "^4.0.18"
   }
 }

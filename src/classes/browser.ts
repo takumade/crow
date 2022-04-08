@@ -1,9 +1,11 @@
 import { Builder, By, Key, until } from 'selenium-webdriver';
+import fs from 'fs'
 
 export class Browser {
 
     driver
     page
+    cookieFileLocation:string = 'src/storage/cookies.json'
 
     async init(){
         this.driver = await new Builder().forBrowser('chrome').build();
@@ -17,10 +19,6 @@ export class Browser {
     async getDriver(){  
         return this.driver;
     }
-
-
-
-
 
     async goToPage(url:string, waitby:string = "", waitarg:string = "", timeout:number = 10000){
         await this.driver.get(url)
@@ -133,5 +131,42 @@ export class Browser {
     getCurrentPage(){
         return this.page;
     }
+
+    async saveCookies(store:boolean = false){
+        let allCookies = await this.driver.manage().getCookies()
+        
+        if (store == true){
+            let cookieJson = JSON.stringify(allCookies)
+            fs.writeFileSync(this.cookieFileLocation, cookieJson, 'utf8');
+        }
+
+        return allCookies
+    }
+
+    async retreiveCookies(cookies: any[] = null){
+      
+        try{
+            let allCookies: any[]
+
+            if (cookies != null){
+                allCookies = cookies
+            }else{
+                let data = fs.readFileSync(this.cookieFileLocation, 'utf8');
+                allCookies = JSON.parse(data); 
+            }
+                
+            for (let index = 0; index < allCookies.length; index++) {
+                const cookie = allCookies[index];
+                await this.driver.manage().addCookie(cookie)
+            }
+
+            return true
+        }catch(e){
+            console.log(e)
+            return false
+        }
+    }
+
+
 
 }
