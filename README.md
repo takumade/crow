@@ -1,24 +1,25 @@
-# Blackbird
-### Codename: Raven
+# Crow - An unofficial Twitter client
 
-<img src="./images/logo.png" width="200" alt="Blackbird Logo">
+<p style="text-align:center;">
+<img style="background: #1DA1F2; border: 3px solid #fcf7e2; border-radius: 50%" src="./images/crow.png" width="200" height="200" alt="Crow Logo">
+</p>
 
-An unofficial Twitter client in node js.
 
-## Whats blackbird
+## Whats Crow
+<hr>
 
-![Blackbird](./images/usecase.jpg)
+![Crow](./images/usecase.jpg)
 
 Is an unofficial Twitter client written in node js. It works with selenium and twitter. With that said i am not reponsible if you get suspended from twitter. Be a good netizen and follow the rules.
 
 ## How to Install
 1. Clone the project
 
-        git clone https://github.com/takumade/blackbird.git
+        git clone https://github.com/takumade/crow.git
 
 2. Install node modules
 
-        npm install
+        cd crow && npm install
 
 3. Do some coding and play
         npm run start
@@ -71,6 +72,51 @@ let trends = await client.getTrends()
 await client.tweet("Hello World! how are you");
 ```
 
+**3. Like, Retweet and Reply a tweet**
+```js
+
+import { Tweet } from "./classes/tweet"
+...
+// get client first 
+let tweet = new Tweet(client.driver, <tweetUrl>)
+await tweet.like()
+await tweet.retweet()
+await tweet.reply("Sounds Awesome!")
+```
+
+**4. Get user info**
+
+```js
+import User from "./classes/user"
+...
+//get client first
+let user = new User(client.driver, <username>)
+let info = await user.getUserInfo()
+```
+
+## Classes
+
+`TwitterClient`
+
+:: Deals mainly with logging you in and doing general stuff like getting tweets, trends
+
+`Tweet`
+
+:: Deals with a single tweet
+
+`User`
+
+:: Deals with a tweeter user
+
+
+`Browser`
+
+:: Has helper functions 
+
+
+
+
+
 
 ## Features
 
@@ -78,15 +124,15 @@ await client.tweet("Hello World! how are you");
 |----------|:-------------:|------:|
 | Auth |  :ballot_box_with_check:| :ballot_box_with_check: |
 | Get User |    :ballot_box_with_check:   |   :ballot_box_with_check: |
-| Get Tweet |    :x:   |   :x: |
+| Get Tweet |    :ballot_box_with_check:  |   :ballot_box_with_check:|
 | Get Trending |   :ballot_box_with_check:  |   :ballot_box_with_check: |
 | Get Tweets |    :ballot_box_with_check:   |   :ballot_box_with_check: |
-| Reply to a tweet |    :x:   |   :x: |
+| Reply to a tweet |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Tweet a text message |    :ballot_box_with_check:   |   :ballot_box_with_check: |
-| Like a tweet |    :x:   |   :x: |
-| Delete a tweet |    :x:   |   :x: |
+| Like a tweet |    :ballot_box_with_check:  |   :ballot_box_with_check: |
+| Delete a tweet |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Login with cookies |    :ballot_box_with_check:  |   :ballot_box_with_check: |
-| Turn it into a package |    :x:   |   :x: |
+| Turn it into a package |    :ballot_box_with_check:   |   :ballot_box_with_check: |
     
 ## Buy me a coffee
 
