@@ -6,7 +6,6 @@
 
 
 ## Whats Crow
-<hr>
 
 ![Crow](./images/usecase.jpg)
 
