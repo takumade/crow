@@ -1,15 +1,15 @@
-import { Builder, By, Key, until } from 'selenium-webdriver';
+import { Builder, By, Key, until, WebDriver } from 'selenium-webdriver';
 import fs from 'fs'
+import { sleepMaxTime, sleepMinTime } from '../constants';
 
 export class Browser {
 
-    driver
+    driver:WebDriver
     page
     cookieFileLocation:string = 'src/storage/cookies.json'
 
-    async init(){
-        this.driver = await new Builder().forBrowser('chrome').build();
-        return this
+    constructor(driver:WebDriver){
+        this.driver = driver
     }
 
     randomInt(min:number, max:number){
@@ -25,7 +25,7 @@ export class Browser {
 
         if(waitby != ""){
             if (waitby == "css"){
-                await this.driver.wait(until.elementLocated(By.css(waitarg)), 10000)
+                await this.driver.wait(until.elementLocated(By.css(waitarg)), timeout)
             }
         }
         
@@ -165,6 +165,16 @@ export class Browser {
             console.log(e)
             return false
         }
+    }
+
+    async sleepDefault(){
+        let sleepTime = this.randomInt(sleepMinTime, sleepMaxTime)
+        await this.driver.sleep(sleepTime)
+    }
+
+    async sleep(min:number, max:number){
+        let sleepTime = this.randomInt(min, max)
+        await this.driver.sleep(sleepTime)
     }
 
 
