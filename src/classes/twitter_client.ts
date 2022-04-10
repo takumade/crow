@@ -1,17 +1,19 @@
 
 import { isThisTypeNode } from 'typescript'
 import { Browser } from './browser'
-import { username, password } from '../constants'
+import { username, password, fetchTweetsMinTimeout, fetchTweetsMaxTimeout, waitForElTimeout, sendKeyMinTimeout, sendKeyMaxTimeout } from '../constants'
 import { Driver } from 'selenium-webdriver/chrome'
+import { Builder, WebDriver } from 'selenium-webdriver'
 
 export class TwitterClient{
 
     browser: Browser
+    driver: WebDriver
 
 
     async getClient(){
-        this.browser = new Browser()
-        await this.browser.init()
+        this.driver = await new Builder().forBrowser('chrome').build();
+        this.browser = new Browser(this.driver)
         return await this.login()
     }
 
@@ -27,7 +29,7 @@ export class TwitterClient{
             let result = await this.browser.retreiveCookies(cookies)
 
             if (result){
-                await this.browser.driver.sleep(3000)
+                await this.browser.sleepDefault()
 
                 await this.browser.goToPage(
                     "https://twitter.com/",
@@ -39,28 +41,28 @@ export class TwitterClient{
                     "https://twitter.com/i/flow/login",
                 )
     
-                await this.browser.driver.sleep(this.browser.randomInt(6,10) * 1000)
+                await this.browser.sleepDefault()
                 await this.browser.waitForElement( "css",
                 "[autocomplete='username']",
-                20000)
+                waitForElTimeout)
     
                 // Enter username 
-                await this.browser.sendKeys("css", "[autocomplete='username']", username, 0,0)
-                await this.browser.driver.sleep(this.browser.randomInt(1,2))
+                await this.browser.sendKeys("css", "[autocomplete='username']", username, sendKeyMinTimeout,sendKeyMaxTimeout)
+                await this.browser.sleepDefault()
                 await this.browser.findButtonAndClick("Next")
     
                 // Enter password
-                await this.browser.waitForElement("css", 'input[type="password"]')
-                // await this.browser.driver.sleep(10000)
-                await this.browser.sendKeys("css", 'input[type="password"]', password, 0,0)
-                await this.browser.driver.sleep(this.browser.randomInt(1,3))
+                await this.browser.waitForElement("css", 'input[type="password"]', waitForElTimeout)
+                // await this.driver.sleep(10000)
+                await this.browser.sendKeys("css", 'input[type="password"]', password, sendKeyMinTimeout ,sendKeyMinTimeout)
+                await this.browser.sleepDefault()
                 await this.browser.findButtonAndClick("Log in")
             }
 
             
             
 
-            await this.browser.waitForElement("css", '[aria-label="Tweet"]')
+            await this.browser.waitForElement("css", '[aria-label="Tweet"]', waitForElTimeout)
 
             let tweetButton = await this.browser.getElement("css", '[aria-label="Tweet"]')
 
@@ -86,7 +88,7 @@ export class TwitterClient{
                 '[aria-label="Timeline: Trends"]')
 
 
-            await this.browser.waitForElement("css", "[data-testid='trend']")
+            await this.browser.waitForElement("css", "[data-testid='trend']", waitForElTimeout)
 
             // Scroll to the very bottom of the page
             let start = 1000
@@ -125,9 +127,9 @@ export class TwitterClient{
             let tweetElement = await this.browser.getElement("css", '[aria-label="Tweet"]')
             tweetElement.click()
 
-            await this.browser.waitForElement("css", "[data-testid='tweetTextarea_0']")
-            await this.browser.sendKeys("css", "[data-testid='tweetTextarea_0']", tweet, 1 , 2)
-            await this.browser.driver.sleep(this.browser.randomInt(1,3))
+            await this.browser.waitForElement("css", "[data-testid='tweetTextarea_0']", waitForElTimeout)
+            await this.browser.sendKeys("css", "[data-testid='tweetTextarea_0']", tweet, sendKeyMinTimeout , sendKeyMinTimeout)
+            await this.browser.sleepDefault()
             let tweetButton = await this.browser.getElement("css", "[data-testid='tweetButton']")
             tweetButton.click()
 
@@ -136,63 +138,17 @@ export class TwitterClient{
         }
     }
 
-    async getUserInfo(username:string){
-
-        try{
-            await this.browser.goToPage(
-                "https://twitter.com/" + username,
-                "css",
-                '[alt="Opens profile photo"]')
-
-
-            await this.browser.driver.sleep(this.browser.randomInt(1,5))
-
-
-            let scrapUserScript = `
-                let userNameRaw = document.querySelector('[data-testid="UserName"]')
-                                  .innerText.split(String.fromCharCode(0x0a))
-
-                let displayname = userNameRaw[0]
-                let userName = userNameRaw[1]
-                let bio = document.querySelector('[data-testid="UserDescription"]')?.innerText
-                let location = document.querySelector('[data-testid="UserLocation"]')?.innerText
-                let url = document.querySelector('[data-testid="UserUrl"]')?.innerText
-                let professionalCategory = document.querySelector('[data-testid="UserProfessionalCategory"]')?.innerText
-                let following = document.querySelector('[href="/${username}/following"]')?.innerText
-                let followers = document.querySelector('[href="/${username}/followers"]')?.innerText
-                let photo = document.querySelector('[alt="Opens profile photo"]')?.src
-
-                let userDetails = {
-                    displayname,
-                    userName,
-                    bio,
-                    location,
-                    url,
-                    professionalCategory,
-                    following,
-                    followers,
-                    photo
-                }
-
-                return userDetails`
-
-            let result = await this.browser.syncExecuteJS(scrapUserScript)
-            return result
-        }catch (e){
-            console.log(e)
-        }
-    }
-
+    
     async fetchTweets(source: string, amount: number){
 
         try {
             await this.browser.goToPage(source)
-            await this.browser.driver.sleep(this.browser.randomInt(6,10) * 1000)
+            await this.browser.sleep(fetchTweetsMinTimeout, fetchTweetsMaxTimeout)
 
 
             await this.browser.waitForElement("css",
             'article[data-testid="tweet"]',
-            60000)
+            waitForElTimeout)
             
             let currenWindowHandle = await this.browser.getCurrentWindowHandle()
             let finalTweets = []
@@ -221,20 +177,20 @@ export class TwitterClient{
                     }
 
                     await this.browser.switchTab(newTabHandle)
-                    await this.browser.driver.sleep(this.browser.randomInt(1,5) * 1000)
+                    await this.browser.sleepDefault()
 
 
                     let isTweet = await this.browser.syncExecuteJS(`return window.location.href.includes("https://twitter.com/") && window.location.href.includes("status")`)
 
                     if (!isTweet){
                         console.log("[!] Ad found....skipping!")
-                        await this.browser.driver.close()
+                        await this.driver.close()
                         await this.browser.switchTab(currenWindowHandle)
                         continue
                     }
 
 
-                    await this.browser.waitForElement("css", 'article[data-testid="tweet"]', 20000)
+                    await this.browser.waitForElement("css", 'article[data-testid="tweet"]', waitForElTimeout)
 
 
                     // Scrap data here
@@ -277,6 +233,7 @@ export class TwitterClient{
                                     qouteRetweets: tweetQouteRetweets,
                                     likes: tweetLikes
                                 },
+                                tweetUrl: window.location.href,
                                 meta: tweetMeta
                             }`
 
@@ -284,7 +241,7 @@ export class TwitterClient{
 
                     finalTweets.push(tweetData)
                     foundTweets++
-                    await this.browser.driver.close()
+                    await this.driver.close()
                     await this.browser.switchTab(currenWindowHandle)
 
                     console.log(`[!] Scrapped Tweets ${foundTweets}/${amount}`)
@@ -307,7 +264,7 @@ export class TwitterClient{
 
                 // Scroll to the very bottom of the page
                 this.browser.scrollPage(1000, 200, 0)
-                await this.browser.waitForElement("css", 'article[data-testid="tweet"]', 20000)
+                await this.browser.waitForElement("css", 'article[data-testid="tweet"]', waitForElTimeout)
 
                 
                 
@@ -327,7 +284,4 @@ export class TwitterClient{
     async retrieveCookies(cookies: any[]){
         return await this.retrieveCookies(cookies)
     }
-
-
-
 }
