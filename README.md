@@ -1,4 +1,4 @@
-# Crow - An unofficial Twitter client
+# Crow - Hggggghrrrrr Hggggghrrrrr
 
 <p style="text-align:center;">
 <img style="background: #1DA1F2; border: 3px solid #fcf7e2; border-radius: 50%" src="./images/crow.png" width="200" height="200" alt="Crow Logo">
@@ -9,7 +9,11 @@
 
 ![Crow](./images/usecase.jpg)
 
-Is an unofficial Twitter client written in node js. It works with selenium and twitter. With that said i am not reponsible if you get suspended from twitter. Be a good netizen and follow the rules.
+Is an unofficial Twitter client written in selenium and node js. Keep in mind that everything is not done for you. 😄 So you to join the parts/blocks of code to achieve whatever outcome you want. 
+
+Its more like a library where you are given classes(the blocks) and you have to join them in a certain way or configuration inorder to achieve your goal(a giant toy or robot or whatever) 
+
+With that said i am not reponsible if you get suspended from twitter. Be a good netizen and follow the rules. Noobs! be careful
 
 ## How to Install
 1. Clone the project
@@ -33,10 +37,12 @@ export const username = "username"
 export const password = "password"
 ```
 
-2. Now obtain a client and fetch tweets
+**The constants file contains many options that you may want to play with**
+
+2. Now obtain a client and .....play
 
 ```js
-import { TwitterClient } from "./classes/twitter_client"
+import { TwitterClient } from "./classes/crow/twitter_client"
 
 const getTweets = async () =>  {
    try{
@@ -46,8 +52,7 @@ const getTweets = async () =>  {
         
         if(result){
            // Do your stuff here
-           let tweets = await client.fetchTweets("https://twitter.com/home", 10)
-            console.log("Tweets: ", tweets)
+           
         }
 
     }catch(e){
@@ -55,6 +60,8 @@ const getTweets = async () =>  {
     }
 }
 ```
+
+
 
 ## Examples
 
@@ -74,7 +81,7 @@ await client.tweet("Hello World! how are you");
 **3. Like, Retweet and Reply a tweet**
 ```js
 
-import { Tweet } from "./classes/tweet"
+import { Tweet } from "./classes/crow/tweet"
 ...
 // get client first 
 let tweet = new Tweet(client.driver, <tweetUrl>)
@@ -86,11 +93,21 @@ await tweet.reply("Sounds Awesome!")
 **4. Get user info**
 
 ```js
-import User from "./classes/user"
+import User from "./classes/crow/user"
 ...
 //get client first
 let user = new User(client.driver, <username>)
 let info = await user.getUserInfo()
+```
+
+**5. Follow user**
+
+```js
+import User from "./classes/crow/user"
+...
+//get client first
+let user = new User(client.driver, <username>)
+let info = await user.follow()
 ```
 
 ## Classes
@@ -113,17 +130,16 @@ let info = await user.getUserInfo()
 :: Has helper functions 
 
 
-
-
-
-
 ## Features
 
 | Feature   |     Done      |  Is Working |
 |----------|:-------------:|------:|
 | Auth |  :ballot_box_with_check:| :ballot_box_with_check: |
 | Get User |    :ballot_box_with_check:   |   :ballot_box_with_check: |
-| Get Tweet |    :ballot_box_with_check:  |   :ballot_box_with_check:|
+| Get User Followers |    :ballot_box_with_check:   |   :ballot_box_with_check: |
+| Get User Following |    :ballot_box_with_check:   |   :ballot_box_with_check: |
+| Follow User |    :ballot_box_with_check:   |   :ballot_box_with_check: |
+| Unfollow User |    :ballot_box_with_check:  |   :ballot_box_with_check:|
 | Get Trending |   :ballot_box_with_check:  |   :ballot_box_with_check: |
 | Get Tweets |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Reply to a tweet |    :ballot_box_with_check:   |   :ballot_box_with_check: |
@@ -132,7 +148,15 @@ let info = await user.getUserInfo()
 | Delete a tweet |    :ballot_box_with_check:   |   :ballot_box_with_check: |
 | Login with cookies |    :ballot_box_with_check:  |   :ballot_box_with_check: |
 | Turn it into a package |    :ballot_box_with_check:   |   :ballot_box_with_check: |
-    
-## Buy me a coffee
 
-https://wa.me/263778548832?text="Hey%20I%20want%20to%20buy%20you%20a%20coffee"
+
+## Contribution
+
+So you want to contribute? Ok you are welcome to do so, just dont something that can be simply done but the current code. I will be rejecting bad and unclear code.
+
+
+## Do you want to sponsor this, buy this or make it private
+
+Do you wish to sponsor this project so it can continue getting the attention it needs?  Or you just want to buy it so it can be yours. Maybe you are twitter and you want this off the streets.
+
+[Send Me a Whatsapp](https://wa.me/263778548832)  and lets talk. 
