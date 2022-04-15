@@ -1,7 +1,7 @@
-import { Browser } from "./src/classes/browser"
-import Tweet from "./src/classes/tweet"
-import { TwitterClient } from "./src/classes/twitter_client"
-import User from "./src/classes/user"
+import { Browser } from "./src/classes/crow/browser"
+import Tweet from "./src/classes/crow/tweet"
+import { TwitterClient } from "./src/classes/crow/twitter_client"
+import User from "./src/classes/crow/user"
 
 
 

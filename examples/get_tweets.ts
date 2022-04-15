@@ -1,5 +1,5 @@
-import { TwitterClient } from "../src/classes/twitter_client"
-import { Browser } from "../src/classes/browser"
+import { TwitterClient } from "../src/classes/crow/twitter_client"
+import { Browser } from "../src/classes/crow/browser"
 
 
 

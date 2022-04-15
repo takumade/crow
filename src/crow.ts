@@ -1,5 +1,5 @@
-import { TwitterClient } from "../src/classes/twitter_client"
-import User from "./classes/user"
+import { TwitterClient } from "../src/classes/crow/twitter_client"
+import User from "./classes/crow/user"
 
 const start = async () => {
     // Init the browser 
@@ -13,9 +13,11 @@ const start = async () => {
         
         if(result){
            // Do your stuff here
-           let user = new User(client.driver, "UnitedQueenMi")
-           let info = await user.getUserInfo()
-           console.log(info)
+
+           let following = new User(client.driver, "Axecure_sneaker")
+           following.follow()
+           
+           
         }
 
     }catch(e){
