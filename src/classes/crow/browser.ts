@@ -59,16 +59,18 @@ export class Browser {
     async sendKeys(selectorBy:string, selectorByArg:string, keys:string, minDelay:number = 1, maxDelay:number=2){
 
         let element = await this.getElement(selectorBy, selectorByArg)
+        await element.sendKeys(keys)
 
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
+        // TODO: Investigate this effect or behaviour
+        // for (let index = 0; index < keys.length; index++) {
+        //     const key = keys[index];
             
-            if (minDelay > 0 && maxDelay > 0){
-                await this.driver.sleep(this.randomInt(minDelay, maxDelay) * 1000)
-            }
+        //     if (minDelay > 0 && maxDelay > 0){
+        //         await this.driver.sleep(this.randomInt(minDelay, maxDelay) * 1000)
+        //     }
 
-            await element.sendKeys(key)
-        }
+        //     await element.sendKeys(key)
+        // }
     }
 
     async getElement(by:string, arg:string){
@@ -144,6 +146,10 @@ export class Browser {
     }
 
     async retreiveCookies(cookies: any[] = null){
+
+        if (!fs.existsSync(this.cookieFileLocation)){
+            return false
+        }
       
         try{
             let allCookies: any[]
