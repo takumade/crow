@@ -1,5 +1,6 @@
 import { TwitterClient } from "../src/classes/crow/twitter_client"
 import User from "./classes/crow/user"
+import fs from 'fs'
 
 const start = async () => {
     // Init the browser 
@@ -13,10 +14,6 @@ const start = async () => {
         
         if(result){
            // Do your stuff here
-
-           let following = new User(client.driver, "Axecure_sneaker")
-           following.follow()
-           
            
         }
 
