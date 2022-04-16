@@ -196,14 +196,27 @@ class User {
 
     async unfollow(){
         await this.getToUser()
-        await this.browser.syncExecuteJS(`document.querySelector("[data-testid='placementTracking']").childNodes[0].childNodes[0].click()`)
-        this.browser.sleepDefault()
+        await this.browser.sleepDefault()
+
+        let unfollowButton = await this.browser.syncExecuteJS(`return document.querySelector("[data-testid$='-unfollow']")`)
+
+        if (unfollowButton){
+            await this.browser.syncExecuteJS(`document.querySelector("[data-testid$='-unfollow']").click()`)
+        await this.browser.sleepDefault()
         await this.browser.syncExecuteJS(`document.querySelector("[data-testid='confirmationSheetConfirm']").click()`)
+        }
     }
 
     async follow(){
         await this.getToUser()
-        await this.browser.syncExecuteJS(`document.querySelector("[data-testid='placementTracking']").childNodes[0].childNodes[0].click()`)
+        await this.browser.sleepDefault()
+
+        let followButton = await this.browser.syncExecuteJS(`return document.querySelector("[data-testid$='-follow']")`)
+
+        if (followButton){
+            await this.browser.syncExecuteJS(`document.querySelector("[data-testid$='-follow']").click()`)
+            await this.browser.sleepDefault()
+        }
     }
 }
 
