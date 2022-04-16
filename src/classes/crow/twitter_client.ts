@@ -20,13 +20,14 @@ export class TwitterClient{
 
         try{
             // Try loggin in with cookies
+            console.log("[+] Trying login method 1: Cookies 🍪" )
             await this.browser.goToPage(
                 "https://twitter.com/",
             )
 
-
             let result = await this.browser.retreiveCookies(cookies)
 
+       
             if (result){
                 await this.browser.sleepDefault()
 
@@ -35,21 +36,24 @@ export class TwitterClient{
                 )
 
             }else{
+                console.log("[+] Cookies not found😥, Trying login method 2: Credentials🔐" )
                 // Else login with creds \
                 await this.browser.goToPage(
                     "https://twitter.com/i/flow/login",
                 )
     
-                await this.browser.sleepDefault()
                 await this.browser.waitForElement( "css",
                 "[autocomplete='username']",
                 waitForElTimeout)
+
+                console.log("[+] Inputting username...", username)
     
                 // Enter username 
-                await this.browser.sendKeys("css", "[autocomplete='username']", username, sendKeyMinTimeout,sendKeyMaxTimeout)
+                await this.browser.sendKeys("css", "input[autocomplete='username']", username, sendKeyMinTimeout,sendKeyMaxTimeout)
                 await this.browser.sleepDefault()
                 await this.browser.findButtonAndClick("Next")
     
+                console.log("[+] Inputting password...", password)
                 // Enter password
                 await this.browser.waitForElement("css", 'input[type="password"]', waitForElTimeout)
                 // await this.driver.sleep(10000)
