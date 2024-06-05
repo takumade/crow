@@ -1,10 +1,4 @@
-# Crow - Hggggghrrrrr Hggggghrrrrr
-
-<p style="text-align:center;">
-<img style="background: #1DA1F2; border: 3px solid #fcf7e2; border-radius: 50%" src="./images/crow.png" width="200" height="200" alt="Crow Logo">
-</p>
-
-
+# Crow - Unofficial Twitter Client
 ## Whats Crow
 
 ![Crow](./images/usecase.jpg)
