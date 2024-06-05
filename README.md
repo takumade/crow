@@ -1,5 +1,4 @@
 # Crow - Unofficial Twitter Client
-## Whats Crow
 
 ![Crow](./images/usecase.jpg)
 
